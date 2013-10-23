@@ -14,7 +14,11 @@ main = do
             { ppOutput = hPutStrLn xmproc
             , ppTitle = xmobarColor "green" "" . shorten 50
             }
-        , borderWidth = 2
+        , borderWidth = 1
         , terminal    = "urxvtc" } `additionalKeys`
         [ ((mod4Mask    ,xK_l), spawn "slock") 
+        , ((mod4Mask    ,xK_n), spawn "mpc next")
+        , ((mod4Mask .|. shiftMask  ,xK_n), spawn "mpc prev")
+        , ((mod4Mask    ,xK_j), spawn "mpc volume -7")
+        , ((mod4Mask    ,xK_k), spawn "mpc volume +7")
         ]
