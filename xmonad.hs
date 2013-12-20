@@ -4,8 +4,10 @@ import XMonad.Hooks.ManageDocks
 import XMonad.Util.Run(spawnPipe)
 import XMonad.Util.EZConfig(additionalKeys)
 import XMonad.Actions.WorkspaceNames
+import XMonad.Hooks.UrgencyHook
 import XMonad.Prompt
 import System.IO
+import Data.List
 
 amWorkspaces = 
     [ "1:Term"
@@ -19,9 +21,11 @@ amWorkspaces =
     , "9:EX1"
     ]
 
+
 amManageHook = composeAll . concat $
     [ [ className =? net   --> doShift "2:Net"  | net <- amNetShifts ]
     , [ className =? chat  --> doShift "3:Chat" | chat <- amChatShifts ]
+    , [ title =? "Minecraft 1.7.4" --> doFloat ]
     , [ ( className =? "Firefox" <&&> resource =? "Dialog") --> doFloat ]
     , [ className =? fc    --> doFloat | fc <- amFloatClass ]
     , [ manageDocks ]
@@ -35,17 +39,21 @@ amManageHook = composeAll . concat $
         amFloatClass = 
             [ "Wine"
             , "MPlayer"
+            , "net-minecraft-bootstrap-Bootstrap"
+            , "xv"
+            , "XVroot"
             ]
-
 
 
 main = do
     spawn "/usr/local/bin/xmobar"
-    xmonad $ defaultConfig
+    xmonad $ withUrgencyHook NoUrgencyHook $ defaultConfig
         { manageHook  = amManageHook
         , workspaces  = amWorkspaces
         , layoutHook  = avoidStruts $ layoutHook defaultConfig
-        , logHook     = workspaceNamesPP xmobarPP >>= dynamicLogString >>= xmonadPropLog
+        , logHook     = workspaceNamesPP xmobarPP 
+            { ppUrgent = xmobarColor "#FF0000" ""
+            } >>= dynamicLogString >>= xmonadPropLog 
         , borderWidth = 1
         , terminal    = "urxvtc" } `additionalKeys`
         [ ((mod4Mask    ,xK_l), spawn "xlock") 
