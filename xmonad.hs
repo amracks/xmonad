@@ -6,6 +6,7 @@ import XMonad.Util.EZConfig(additionalKeys)
 import XMonad.Actions.WorkspaceNames
 import XMonad.Hooks.UrgencyHook
 import XMonad.Prompt
+import XMonad.Layout.NoBorders
 import System.IO
 import Data.List
 
@@ -44,13 +45,19 @@ amManageHook = composeAll . concat $
             , "XVroot"
             ]
 
+amLayoutHook = tiled ||| Mirror tiled ||| noBorders Full
+    where
+        tiled = Tall nmaster delta ratio
+        nmaster = 1
+        ratio = 2/3
+        delta = 3/100
 
 main = do
     spawn "/usr/local/bin/xmobar"
     xmonad $ withUrgencyHook NoUrgencyHook $ defaultConfig
         { manageHook  = amManageHook
         , workspaces  = amWorkspaces
-        , layoutHook  = avoidStruts $ layoutHook defaultConfig
+        , layoutHook  = avoidStruts $ amLayoutHook
         , logHook     = workspaceNamesPP xmobarPP 
             { ppUrgent = xmobarColor "#FF0000" ""
             } >>= dynamicLogString >>= xmonadPropLog 
