@@ -5,9 +5,9 @@ Config { font = "-*-Fixed-Bold-R-Normal-*-13-*-*-*-*-*-*-*"
        , commands = [ Run Weather "KSAN" ["-t"," <tempF>F","-L","64","-H","77","--normal","green","--high","red","--low","lightblue"] 36000
                     , Run Date "%a %b %_d %l:%M" "date" 10
                     , Run XMonadLog
-		    , Run MPD ["-t", "<artist> - <title>"] 10
+                    , Run Com "mpc" ["current"] "mpd" 40
                     ]
         , sepChar = "%"
         , alignSep = "}{"
-        , template = "%XMonadLog% }{  %mpd% | %KSAN% | <fc=#ee9a00>%date%</fc>"
-}
+        , template = "%XMonadLog% }{ %mpd% | %KSAN% | <fc=#ee9a00>%date%</fc>"
+        }
