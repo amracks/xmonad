@@ -7,6 +7,12 @@ import XMonad.Actions.WorkspaceNames
 import XMonad.Hooks.UrgencyHook
 import XMonad.Prompt
 import XMonad.Layout.NoBorders
+import XMonad.Layout.MosaicAlt
+import XMonad.Layout.Mosaic
+import XMonad.Layout.Spiral
+import XMonad.Layout.Grid
+import XMonad.Layout.Combo
+import qualified Data.Map as M
 import System.IO
 import Data.List
 
@@ -45,7 +51,7 @@ amManageHook = composeAll . concat $
             , "XVroot"
             ]
 
-amLayoutHook = tiled ||| Mirror tiled ||| noBorders Full
+amLayoutHook = tiled ||| Mirror tiled ||| noBorders Full ||| mosaic 2 [3,2]||| MosaicAlt M.empty ||| spiral (1/4) ||| Grid
     where
         tiled = Tall nmaster delta ratio
         nmaster = 1
