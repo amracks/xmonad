@@ -4,6 +4,7 @@ import XMonad.Hooks.ManageDocks
 import XMonad.Util.Run(spawnPipe)
 import XMonad.Util.EZConfig(additionalKeys)
 import XMonad.Actions.WorkspaceNames
+import XMonad.Actions.SpawnOn
 import XMonad.Hooks.UrgencyHook
 import XMonad.Prompt
 import XMonad.Layout.NoBorders
@@ -71,7 +72,17 @@ amLayoutHook = onWorkspace "1:T1" amNoBorderFull  $
 main = do
     spawn "/usr/local/bin/xmobar"
     xmonad $ withUrgencyHook NoUrgencyHook $ defaultConfig
-        { manageHook  = amManageHook
+        { --startupHook = do
+            -- spawnOn "1:T1" "urxvtc -e tmux"
+            -- spawnOn "2:T2" "urxvtc"
+            -- spawnOn "2:T2" "urxvtc -e tmux"
+            -- spawnOn "2:T2" "urxvtc"
+            -- spawnOn "2:T2" "urxvtc"
+            -- spawnOn "3:NT" "firefox"
+            -- spawnOn "3:NT" "thunderbird"
+            -- spawnOn "4:CH" "pidgin"
+            -- spawnOn "4:CH" "urxvtc -e weechat"
+        manageHook  = amManageHook
         , workspaces  = amWorkspaces
         , layoutHook  = avoidStruts $ amLayoutHook
         , logHook     = workspaceNamesPP xmobarPP 
