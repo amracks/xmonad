@@ -12,26 +12,27 @@ import XMonad.Layout.Mosaic
 import XMonad.Layout.Spiral
 import XMonad.Layout.Grid
 import XMonad.Layout.Combo
+import XMonad.Layout.PerWorkspace
 import qualified Data.Map as M
 import System.IO
 import Data.List
 
 amWorkspaces = 
-    [ "1:Term"
-    , "2:Net"
-    , "3:Chat"
-    , "4:Doc1"
-    , "5:Doc2"
-    , "6:VM1"
-    , "7:VM2"
-    , "8:VM3"
-    , "9:EX1"
+    [ "1:T1"
+    , "2:T2"
+    , "3:NT"
+    , "4:CH"
+    , "5:V1"
+    , "6:V2"
+    , "7:D1"
+    , "8:D2"
+    , "9:E1"
     ]
 
 
 amManageHook = composeAll . concat $
-    [ [ className =? net   --> doShift "2:Net"  | net <- amNetShifts ]
-    , [ className =? chat  --> doShift "3:Chat" | chat <- amChatShifts ]
+    [ [ className =? net   --> doShift "3:NT"  | net <- amNetShifts ]
+    , [ className =? chat  --> doShift "4:CH" | chat <- amChatShifts ]
     , [ title =? "Minecraft 1.7.4" --> doFloat ]
     , [ ( className =? "Firefox" <&&> resource =? "Dialog") --> doFloat ]
     , [ className =? fc    --> doFloat | fc <- amFloatClass ]
@@ -51,12 +52,21 @@ amManageHook = composeAll . concat $
             , "XVroot"
             ]
 
-amLayoutHook = tiled ||| Mirror tiled ||| noBorders Full ||| mosaic 2 [3,2]||| MosaicAlt M.empty ||| spiral (1/4) ||| Grid
+amNoBorderFull = noBorders Full
+amSpiral       = spiral (1/3)
+
+amDefaultLayouts = tiled ||| Mirror tiled ||| noBorders Full  ||| spiral (1/4) ||| Grid
     where
         tiled = Tall nmaster delta ratio
         nmaster = 1
         ratio = 2/3
         delta = 3/100
+
+amLayoutHook = onWorkspace "1:T1" amNoBorderFull  $
+               onWorkspace "2:T2" amSpiral  $
+               onWorkspace "5:V1" amNoBorderFull $
+               onWorkspace "6:V2" amNoBorderFull $
+               amDefaultLayouts
 
 main = do
     spawn "/usr/local/bin/xmobar"
