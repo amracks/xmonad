@@ -19,21 +19,21 @@ import System.IO
 import Data.List
 
 amWorkspaces = 
-    [ "1:T1"
-    , "2:T2"
-    , "3:NT"
-    , "4:CH"
-    , "5:V1"
-    , "6:V2"
-    , "7:D1"
-    , "8:D2"
-    , "9:E1"
+    [ "Term"
+    , "Net"
+    , "Chat"
+    , "Dash"
+    , "VM1"
+    , "VM2"
+    , "7"
+    , "8"
+    , "9"
     ]
 
 
 amManageHook = composeAll . concat $
-    [ [ className =? net   --> doShift "3:NT"  | net <- amNetShifts ]
-    , [ className =? chat  --> doShift "4:CH" | chat <- amChatShifts ]
+    [ [ className =? net   --> doShift "Net"  | net <- amNetShifts ]
+    , [ className =? chat  --> doShift "Chat" | chat <- amChatShifts ]
     , [ title =? "Minecraft 1.7.4" --> doFloat ]
     , [ ( className =? "Firefox" <&&> resource =? "Dialog") --> doFloat ]
     , [ className =? fc    --> doFloat | fc <- amFloatClass ]
@@ -63,14 +63,18 @@ amDefaultLayouts = tiled ||| Mirror tiled ||| noBorders Full  ||| spiral (1/4) |
         ratio = 2/3
         delta = 3/100
 
-amLayoutHook = onWorkspace "1:T1" amNoBorderFull  $
-               onWorkspace "2:T2" amSpiral  $
-               onWorkspace "5:V1" amNoBorderFull $
-               onWorkspace "6:V2" amNoBorderFull $
+amLayoutHook = onWorkspace "Term" amNoBorderFull  $
+               onWorkspace "Dash" amSpiral  $
+               onWorkspace "VM1" amNoBorderFull $
+               onWorkspace "VM2" amNoBorderFull $
                amDefaultLayouts
 
+amDzen = "dzen2 -x '0' -y '0' -w '1920' -ta 'l' -fg #FFFFFF' -bg '#1B1D1E'"
+amConky = ""
+
 main = do
-    spawn "/usr/local/bin/xmobar"
+    -- spawn "/usr/local/bin/xmobar"
+    dzenBar <- spawnPipe amDzen
     xmonad $ withUrgencyHook NoUrgencyHook $ defaultConfig
         { --startupHook = do
             -- spawnOn "1:T1" "urxvtc -e tmux"
@@ -85,9 +89,10 @@ main = do
         manageHook  = amManageHook
         , workspaces  = amWorkspaces
         , layoutHook  = avoidStruts $ amLayoutHook
-        , logHook     = workspaceNamesPP xmobarPP 
-            { ppUrgent = xmobarColor "#FF0000" ""
-            } >>= dynamicLogString >>= xmonadPropLog 
+        , logHook     = dynamicLogWithPP $ dzenPP { ppOutput = hPutStrLn dzenBar }
+        --, logHook     = workspaceNamesPP dzenPP
+            --{ ppUrgent = xmobarColor "#FF0000" ""
+            --} >>= dynamicLogString >>= xmonadPropLog 
         , borderWidth = 1
         , terminal    = "urxvtc" } `additionalKeys`
         [ ((mod4Mask    ,xK_l), spawn "xlock") 
