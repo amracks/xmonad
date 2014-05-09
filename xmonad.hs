@@ -3,6 +3,8 @@ import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import XMonad.Util.Run(spawnPipe)
 import XMonad.Util.EZConfig(additionalKeys)
+import XMonad.Util.WorkspaceCompare
+import XMonad.Util.Loggers
 import XMonad.Actions.WorkspaceNames
 import XMonad.Actions.SpawnOn
 import XMonad.Hooks.UrgencyHook
@@ -69,12 +71,17 @@ amLayoutHook = onWorkspace "Term" amNoBorderFull  $
                onWorkspace "VM2" amNoBorderFull $
                amDefaultLayouts
 
-amDzen = "dzen2 -x '0' -y '0' -w '1920' -ta 'l' -fg #FFFFFF' -bg '#1B1D1E'"
-amConky = ""
+amPPExtras = [ logCmd "mpc current"
+             , date  "%A %B %d, %Y - %H:%M:%S"
+             ]
+        
+amXmobarPP = workspaceNamesPP xmobarPP { ppUrgent = xmobarColor "#FF0000" ""
+                      }
+
+amXmobar = "/usr/local/bin/xmobar"
 
 main = do
-    -- spawn "/usr/local/bin/xmobar"
-    dzenBar <- spawnPipe amDzen
+    spawn amXmobar
     xmonad $ withUrgencyHook NoUrgencyHook $ defaultConfig
         { --startupHook = do
             -- spawnOn "1:T1" "urxvtc -e tmux"
@@ -89,10 +96,7 @@ main = do
         manageHook  = amManageHook
         , workspaces  = amWorkspaces
         , layoutHook  = avoidStruts $ amLayoutHook
-        , logHook     = dynamicLogWithPP $ dzenPP { ppOutput = hPutStrLn dzenBar }
-        --, logHook     = workspaceNamesPP dzenPP
-            --{ ppUrgent = xmobarColor "#FF0000" ""
-            --} >>= dynamicLogString >>= xmonadPropLog 
+        , logHook     = amXmobarPP >>= dynamicLogString >>= xmonadPropLog 
         , borderWidth = 1
         , terminal    = "urxvtc" } `additionalKeys`
         [ ((mod4Mask    ,xK_l), spawn "xlock") 

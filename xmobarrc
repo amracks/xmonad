@@ -8,6 +8,6 @@ Config { font = "-*-Fixed-Bold-R-Normal-*-13-*-*-*-*-*-*-*"
                     , Run Com "mpc" ["current"] "mpd" 40
                     ]
         , sepChar = "%"
-        , alignSep = "}{"
+        , alignSep = "}{
         , template = "%XMonadLog% }{ %mpd% | %KSAN% | <fc=#ee9a00>%date%</fc>"
         }
