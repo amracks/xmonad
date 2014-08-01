@@ -99,7 +99,7 @@ main = do
         , logHook     = amXmobarPP >>= dynamicLogString >>= xmonadPropLog 
         , borderWidth = 1
         , terminal    = "urxvtc" } `additionalKeys`
-        [ ((mod4Mask    ,xK_l), spawn "xlock") 
+        [ ((mod4Mask    ,xK_l), spawn "xlock -mode blank") 
         , ((mod4Mask    ,xK_n), spawn "mpc next")
         , ((mod4Mask .|. shiftMask  ,xK_n), spawn "mpc prev")
         , ((mod4Mask    ,xK_j), spawn "mpc volume -7")
