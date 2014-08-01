@@ -65,7 +65,7 @@ amDefaultLayouts = tiled ||| Mirror tiled ||| noBorders Full  ||| spiral (1/4) |
         ratio = 2/3
         delta = 3/100
 
-amLayoutHook = onWorkspace "Term" amNoBorderFull  $
+amLayoutHook = onWorkspace "Term" amDefaultLayouts  $
                onWorkspace "Dash" amSpiral  $
                onWorkspace "VM1" amNoBorderFull $
                onWorkspace "VM2" amNoBorderFull $
