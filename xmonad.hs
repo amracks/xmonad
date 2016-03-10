@@ -94,10 +94,12 @@ main = do
             -- spawnOn "4:CH" "pidgin"
             -- spawnOn "4:CH" "urxvtc -e weechat"
         manageHook  = amManageHook
+        , normalBorderColor  = "#1F1F1F"
+        , focusedBorderColor = "#DCDCCC"
+        , borderWidth = 2
         , workspaces  = amWorkspaces
         , layoutHook  = avoidStruts $ amLayoutHook
         , logHook     = amXmobarPP >>= dynamicLogString >>= xmonadPropLog 
-        , borderWidth = 1
         , terminal    = "urxvtc" } `additionalKeys`
         [ ((mod4Mask    ,xK_l), spawn "xlock -mode blank") 
         , ((mod4Mask    ,xK_n), spawn "mpc next")

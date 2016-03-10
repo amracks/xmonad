@@ -1,14 +1,12 @@
 Config { font = "-*-Fixed-Bold-R-Normal-*-13-*-*-*-*-*-*-*"
-       , bgColor = "black"
-       , fgColor = "grey"
+       , bgColor = "#1F1F1F"
+       , fgColor = "#DCDCCC"
        , position = TopW L 100
        , commands = [ Run Weather "KSAN" ["-t"," <tempF>F","-L","64","-H","77","--normal","green","--high","red","--low","lightblue"] 36000
                     , Run Date "%a %b %_d %H:%M" "date" 10
-                    , Run Com "/bin/date" ["-v +16H", "'+%a %b %_d %H:%M'"] "jtime" 30
                     , Run XMonadLog
-                    , Run Com "mpc" ["current"] "mpd" 40
                     ]
         , sepChar = "%"
         , alignSep = "}{"
-        , template = "%XMonadLog% }{ %mpd% | %KSAN% | Tokyo: <fc=red>%jtime%</fc> | <fc=#ee9a00>%date%</fc>"
+        , template = "%XMonadLog% }{ %KSAN% | <fc=#ee9a00>%date%</fc>"
         }
