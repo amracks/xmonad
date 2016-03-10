@@ -43,8 +43,7 @@ amManageHook = composeAll . concat $
     ]
     where
         amNetShifts = 
-            [ "Firefox"
-            , "Thunderbird"
+            [ "Thunderbird"
             ]
         amChatShifts = [ "Pidgin" ]
         amFloatClass = 
